@@ -13,7 +13,7 @@ pipeline {
             steps {
                 git branch: 'master',
                     credentialsId: 'github-hub-credentials',
-                    url: 'https://github.com/abdulk5798'
+                    url: 'https://github.com/abdulk5798/todo-application.git'
 
             }
         }
@@ -26,12 +26,10 @@ pipeline {
 
         stage('Build and Push Docker image') {
             steps {
-                step {
                     withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/']) {
                         sh "docker build -t ${IMAGE_NAME} ."
-                        sh "docker tag ${IMAGE_NAME}${DOCKER_REPO}:${DOCKER_TAG}"
+                        sh "docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${DOCKER_TAG}"
                         sh "docker push ${DOCKER_REPO}:${DOCKER_TAG}"
-                    }
                 }
             }
         }
